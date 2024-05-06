@@ -3,6 +3,7 @@ use crate::{ais::error::Result, config::config};
 
 pub mod error;
 pub mod asst;
+pub mod msg;
 
 pub type OaClient = Client<OpenAIConfig>;
 
