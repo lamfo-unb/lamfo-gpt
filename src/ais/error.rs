@@ -1,7 +1,8 @@
 pub type Result<T> = core::result::Result<T, Error>;
 use async_openai::error::OpenAIError;
+use derive_more::From;
 
-#[derive(Debug)]
+#[derive(Debug, From)]
 pub enum Error {
     OpenAIError(OpenAIError),
 }
@@ -12,12 +13,6 @@ impl core::fmt::Display for Error {
     fn fmt(&self, fmt: &mut core::fmt::Formatter) -> core::result::Result<(), core::fmt::Error> {
         write!(fmt, "{self:?}")
     }
-}
-
-impl From<OpenAIError> for Error {
-	fn from(val: OpenAIError) -> Self {
-		Self::OpenAIError(val)
-	}
 }
 
 impl std::error::Error for Error {}
