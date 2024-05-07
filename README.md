@@ -10,3 +10,5 @@ Copy rename config_example.toml localized in path /.cargo for config.toml
 and add your open ai api key.
 
 Open prompt in source code run this code `cargo run`
+
+![Prompt Initialized Aplication](image.png)
