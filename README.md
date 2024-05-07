@@ -4,9 +4,9 @@ Robert AI is a expert about LAMFO (LAMFO - Machine Learning Laboratory in Financ
 My idea is expand knowledge of Robert for get informations through web scrapping, videos and database. For help organizations other areas for example Law, Economy, News and many others depending on your imagination.
 
 ## Run Aplication
-Have installed cargo in you system.
+Have installed cargo in your system.
 
-Copy rename config_example.toml localized in path /.cargo for config.toml
+Copy and rename config_example.toml localized in path /.cargo for config.toml
 and add your open ai api key.
 
 Open prompt in source code run this code `cargo run`
