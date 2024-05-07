@@ -1,14 +1,16 @@
-use crate::{ais, robert, utils};
 use derive_more::From;
+
+use crate::{ais, utils};
 
 pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug, From)]
 pub enum Error {
-    ConfigMissingEnv(&'static str),
-    FailedToCreateAssistant(ais::error::Error),
-    CreateRobertError(robert::error::Error),
+    DataDirNotFound,
     UtilsError(utils::error::Error),
+    AisError(ais::error::Error),
+    ReadError(std::io::Error),
+    ShouldNotDeleteError(String),
 }
 
 // region:    --- Error Boilerplate

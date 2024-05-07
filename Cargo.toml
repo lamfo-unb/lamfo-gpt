@@ -15,3 +15,6 @@ derive_more = {version = "1.0.0-beta", features = ["from", "display", "deref"] }
 dialoguer = "0.11"
 console = "0.15"
 textwrap = "0.16"
+globset = "0.4"
+walkdir = "2"
+lopdf = "0.32.0"

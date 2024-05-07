@@ -1,8 +1,44 @@
-use crate::{ais::asst::{self, CreateConfig}, error::{Error, Result}};
+use textwrap::wrap;
+
+use crate::{error::Result, robert::Robert, utils::cli::{ico_res, prompt, txt_res}};
 
 mod ais;
 mod config;
 mod error;
+mod robert;
+mod utils;
+
+const DEFAULT_DIR: &str = "robert";
+
+#[derive(Debug)]
+enum Cmd {
+    Quit,
+    Chat(String),
+    RefreshAll,
+    RefreshConv,
+    RefreshInst,
+    RefreshFiles,
+}
+
+impl Cmd {
+    fn from_input(input: impl Into<String>) -> Self {
+        let input = input.into();
+
+        if input == "/q" {
+            Self::Quit
+        } else if input == "/r" || input == "/ra" {
+            Self::RefreshAll
+        } else if input == "/ri" {
+            Self::RefreshInst
+        } else if input == "/rf" {
+            Self::RefreshFiles
+        } else if input == "/rc" {
+            Self::RefreshConv
+        } else {
+            Self::Chat(input.to_string())
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() {
@@ -16,37 +52,40 @@ async fn main() {
 }
 
 async fn start() -> Result<()> {
-    let oac = ais::new_oa_client()
-        .map_err(|_| Error::FailedToCreateOaClient)?;
+    let mut robert = Robert::init_from_dir(DEFAULT_DIR, false).await?;
 
-    let asst_config = CreateConfig {
-        name: "Robert".to_string(),
-        model: "gpt-3.5-turbo".to_string(),
-    };
-    let asst_id = ais::asst::load_or_create_asst(&oac, asst_config, false)
-        .await
-        .map_err(|err| Error::FailedToCreateAssistant(err))?;
-    asst::upload_instructions(
-        &oac, 
-        &asst_id, 
-        r#"
-        Your name is Robert and is specialist information of LAMFO (Machine Learning Laboratory in Finance and Organizations).
+    let mut conv = robert.load_or_create_conv(false).await?;
 
-        Your language is Portuguese.
+    loop {
+        println!();
+        let input = prompt("Ask away")?;
+        let cmd = Cmd::from_input(input);
 
-        If you area asked about anything to do with LAMFO,
-        Answer that I answer omly questions about LAMFO.
-
-        Please review the knowledge bundle document before answering, and answer to the best of yout ability.
-
-        Also, when user ask about LAMFO, check the knowledge file, everything is there.
-        All the information about LAMFO is in this files.
-        "#.to_string()
-    ).await?;
-
-    let thread_id = asst::create_thread(&oac).await?;
-    let msg = asst::run_thread_msg(&oac, &asst_id, &thread_id, "Qual seu nome?").await?;
-    println!("->> response: {msg}");
+        match cmd {
+            Cmd::Quit => break,
+            Cmd::Chat(msg) => {
+                let res = robert.chat(&conv, &msg).await?;
+                let res = wrap(&res, 80).join("\n");
+                println!("{} {}", ico_res(), txt_res(res));
+            },
+            Cmd::RefreshAll => {
+                robert = Robert::init_from_dir(DEFAULT_DIR, true).await?;
+                conv = robert.load_or_create_conv(true).await?;
+            },
+            Cmd::RefreshConv => {
+                conv = robert.load_or_create_conv(true).await?;
+            },
+            Cmd::RefreshInst => {
+                robert = Robert::init_from_dir(DEFAULT_DIR, true).await?;
+                conv = robert.load_or_create_conv(true).await?;
+            },
+            Cmd::RefreshFiles => {
+                robert.upload_files(true).await?;
+                conv = robert.load_or_create_conv(true).await?;
+            },
+            
+        }
+    }
 
     Ok(())
 }

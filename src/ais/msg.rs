@@ -9,14 +9,6 @@ pub fn user_msg(content: impl Into<String>) -> CreateMessageRequest {
     }
 }
 
-pub fn asst_msg(content: impl Into<String>) -> CreateMessageRequest {
-    CreateMessageRequest {
-        role: "assistant".to_string(),
-        content: content.into(),
-        ..Default::default()
-    }
-}
-
 pub fn get_text_content(msg: MessageObject) -> Result<String> {
     let msg_content = msg
         .content

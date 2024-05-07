@@ -1,2 +1,4 @@
 /target
 config.toml
+robert/.robert/files/*
+robert/.robert/*.*
