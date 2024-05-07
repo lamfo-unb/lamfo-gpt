@@ -1,6 +1,6 @@
 use textwrap::wrap;
 
-use crate::{error::Result, robert::Robert, utils::cli::{ico_res, prompt, txt_res}};
+use crate::{error::Result, robert::Robert, utils::cli::{ico_check, ico_res, prompt, txt_res}};
 
 mod ais;
 mod config;
@@ -42,7 +42,7 @@ impl Cmd {
 
 #[tokio::main]
 async fn main() {
-    println!("Iniciando o chat!");
+    println!("{} Initializing chat!", ico_check());
 
     match start().await {
         Ok(_) => println!("\nTchau!\n"),

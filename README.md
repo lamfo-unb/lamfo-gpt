@@ -11,4 +11,4 @@ and add your open ai api key.
 
 Open prompt in source code run this code `cargo run`
 
-![Prompt Initialized Aplication](image.png)
+![Prompt Initialized Aplication](image-1.png)
