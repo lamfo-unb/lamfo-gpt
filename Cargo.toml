@@ -6,15 +6,45 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Open AI
+
 async-openai = "0.20.0"
+
+# Tokio Async
 tokio = { version = "1", features = ["full"] }
+
+# Toml
+
 toml = "0.8"
+
+# Json
+
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-derive_more = {version = "1.0.0-beta", features = ["from", "display", "deref"] }
+
+# Cli
+
 dialoguer = "0.11"
 console = "0.15"
 textwrap = "0.16"
+
+# Glob
+
 globset = "0.4"
+
+# Files
+
 walkdir = "2"
+
+# Pdf
+
 lopdf = "0.32.0"
+
+# Web
+axum = "0.7.5"
+tracing = "0.1"
+tracing-subscriber = {version = "0.3.18", features = ["env-filter"]}
+
+# Others
+
+derive_more = {version = "1.0.0-beta", features = ["from", "display", "deref"] }

@@ -1,6 +1,8 @@
+use axum::{response::Html, routing::get, Router};
 use textwrap::wrap;
+use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-use crate::{error::Result, robert::Robert, utils::cli::{ico_check, ico_res, prompt, txt_res}};
+use crate::{error::Result, robert::Robert, utils::cli::{ico_res, prompt, txt_res}};
 
 mod ais;
 mod config;
@@ -42,12 +44,27 @@ impl Cmd {
 
 #[tokio::main]
 async fn main() {
-    println!("{} Initializing chat!", ico_check());
+    tracing_subscriber::registry()
+        .with(fmt::Layer::default())
+        .with(EnvFilter::from_default_env())
+        .try_init()
+        .expect("Erro to initialize tracing");
 
-    match start().await {
-        Ok(_) => println!("\nTchau!\n"),
-        Err(e) => println!("\nError: {}\n", e),
-    }
+    let routes_hello = Router::new().route(
+        "/hello",
+        get(|| async { Html("Hello <strong>World!!!</strong>")})
+    );
+
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    axum::serve(listener, routes_hello).await.unwrap();
+    info!();
+
+    // println!("{} Initializing chat!", ico_check());
+
+    // match start().await {
+    //     Ok(_) => println!("\nTchau!\n"),
+    //     Err(e) => println!("\nError: {}\n", e),
+    // }
     
 }
 
