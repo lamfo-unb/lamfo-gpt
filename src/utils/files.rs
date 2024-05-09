@@ -50,9 +50,9 @@ fn get_reader(file: &Path) -> Result<BufReader<File>> {
 pub fn load_from_toml<T>(file: impl AsRef<Path>) -> Result<T> 
 where
     T: serde::de::DeserializeOwned
-{
+{;
     let content = read_to_string(file.as_ref())
-        .map_err(|_| Error::ReadFileToStringErro)?;
+        .map_err(|val| Error::ReadFileToStringErro(val.to_string()))?;
 
     Ok(
         toml::from_str(&content)

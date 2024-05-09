@@ -1,0 +1,11 @@
+version: '3'
+services:
+  api:
+    image: letsgetrusty/api-example
+    env_file:
+      - ./docker_env_files/.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"

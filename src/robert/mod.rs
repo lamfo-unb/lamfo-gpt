@@ -36,7 +36,6 @@ impl Robert{
 
     pub async fn init_from_dir(dir: impl AsRef<Path>, recreate_asst: bool) -> Result<Self> {
         let dir = dir.as_ref();
-
         let config: Config = load_from_toml(dir.join(ROBERT_TOML))?;
 
         let oac = new_oa_client()?;

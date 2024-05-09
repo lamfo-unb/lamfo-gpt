@@ -6,7 +6,7 @@ pub type Result<T> = core::result::Result<T, Error>;
 pub enum Error {
     CreateFileErro(std::io::Error),
     FileNotFound(String),
-    ReadFileToStringErro,
+    ReadFileToStringErro(String),
     ConvertStrFromTomlError,
     GlobError(globset::Error),
     IsNotFile(String),
