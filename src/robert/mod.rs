@@ -2,6 +2,7 @@ use std::{ fs, path::{Path, PathBuf}};
 
 use derive_more::{Deref, From};
 use serde::{Deserialize, Serialize};
+use tracing::info;
 
 use crate::{ais::{asst::{self, AsstId, ThreadId}, new_oa_client, OaClient}, utils::{cli::ico_check, files::{bundle_to_file, bundle_to_pdf, list_files, load_from_json, load_from_toml, read_to_string, save_to_json}}};
 
@@ -13,7 +14,7 @@ pub mod error;
 
 const ROBERT_TOML: &str = "robert.toml";
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Robert {
     dir: PathBuf,
     oac: OaClient,
@@ -21,7 +22,7 @@ pub struct Robert {
     config: Config,
 }
 
-#[derive(Debug, From, Deref, Serialize, Deserialize)]
+#[derive(Clone, Debug, From, Deref, Serialize, Deserialize)]
 pub struct Conv {
     thread_id: ThreadId,
 }
@@ -128,7 +129,7 @@ impl Robert{
         if file.exists() {
             let inst_content = read_to_string(&file)?;
             asst::upload_instructions(&self.oac, &self.asst_id, inst_content).await?;
-            println!("{} Instructions uploaded", ico_check());
+            info!("{} Instructions uploaded", ico_check());
             Ok(true)
         } else {
             Ok(false)
@@ -146,11 +147,11 @@ impl Robert{
             asst::get_thread(&self.oac, &conv.thread_id)
                 .await
                 .map_err(|_| format!("Cannot find thread_id for {:?}", conv))?;
-            println!("{} Conversation loaded", ico_check());
+            info!("{} Conversation loaded", ico_check());
             conv
         } else {
             let thread_id = asst::create_thread(&self.oac).await?;
-            println!("{} Conversation created", ico_check());
+            info!("{} Conversation created", ico_check());
             let conv = thread_id.into();
             save_to_json(&conv_file, &conv)?;
             conv

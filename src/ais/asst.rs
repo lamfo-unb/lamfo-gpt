@@ -1,5 +1,6 @@
 use std::{collections::{HashMap, HashSet}, path::Path, time::Duration};
 use tokio::time::sleep;
+use tracing::{error, info};
 
 use crate::{ais::{
     error::Error,
@@ -26,10 +27,10 @@ pub struct CreateConfig {
     pub model: String,
 }
 
-#[derive(Debug, From, Deref, Display)]
+#[derive(Clone, Debug, From, Deref, Display)]
 pub struct AsstId(String);
 
-#[derive(Debug, From, Deref, Display, Serialize, Deserialize)]
+#[derive(Clone, Debug, From, Deref, Display, Serialize, Deserialize)]
 pub struct ThreadId(String);
 
 #[derive(Debug, From, Deref, Display)]
@@ -61,15 +62,15 @@ pub async fn load_or_create_asst(
     if let (true, Some(asst_id_ref)) = (recreate, asst_id.as_ref()) {
         delete(oac, asst_id_ref).await?;
         asst_id.take();
-        println!("{} Assistant {} deleted", ico_deleted_ok(), config.name);
+        info!("{} {} deleted", ico_deleted_ok(), config.name);
     }
 
     if let Some(asst_id) = asst_id {
-        println!("{} Assistant {} loaded", ico_check() ,config.name);
+        info!("{} {} loaded", ico_check() ,config.name);
         Ok(asst_id)
     } else {
         let asst_id = create(oac, config.clone()).await?;
-        println!("{} Assistant {} created", ico_check(), config.name);
+        info!("{} {} created", ico_check(), config.name);
         Ok(asst_id)
     }
 }
@@ -144,20 +145,14 @@ pub async fn run_thread_msg(
     };
     let run = oac.threads().runs(&thread_id).create(run_request).await?;
 
-    let term = Term::stdout();
-
     loop {
-        term.write_str(">")?;
         let run = oac.threads().runs(thread_id).retrieve(&run.id).await?;
-        term.write_str("< ")?;
         match run.status {
             RunStatus::Completed => {
-                term.write_str("\n")?;
                 return get_first_thread_msg_content(oac, thread_id).await;
             }
             RunStatus::Queued | RunStatus::InProgress => (),
             other => {
-                term.write_str("\n")?;
                 return Err(Error::WhileRunError(other));
             }
         }
@@ -203,7 +198,7 @@ pub async fn upload_file_by_name(oac: &OaClient, asst_id: &AsstId, file: &Path, 
         // -- Delete the org file
         let oa_files = oac.files();
         if let Err(err) = oa_files.delete(&file_id).await {
-            println!(
+            error!(
                 "{} Can't delete file '{}'\n cause: {}",
                 ico_error(),
                 file.to_string_lossy(),
@@ -215,7 +210,7 @@ pub async fn upload_file_by_name(oac: &OaClient, asst_id: &AsstId, file: &Path, 
         let oa_assts = oac.assistants();
         let oa_assts_files = oa_assts.files(asst_id);
         if let Err(err) = oa_assts_files.delete(&file_id).await {
-            println!(
+            error!(
                 "{} Can't remove assistant file '{}'\n cause: {}",
                 ico_error(),
                 file.x_file_name(),
@@ -262,7 +257,7 @@ pub async fn upload_file_by_name(oac: &OaClient, asst_id: &AsstId, file: &Path, 
 
     // -- Assert warning.
     if oa_file.id != asst_file_obj.id {
-        println!(
+        error!(
             "SHOULD NOT HAPPEN. File id not matching {} {}", 
             oa_file.id, asst_file_obj.id
         )

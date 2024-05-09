@@ -1,14 +1,20 @@
 use axum::{response::Html, routing::get, Router};
+use robert::Conv;
 use textwrap::wrap;
+use tracing::info;
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-use crate::{error::Result, robert::Robert, utils::cli::{ico_res, prompt, txt_res}};
+use crate::{
+    error::Result, model::RobertController, robert::Robert, utils::cli::{ico_check, ico_res, prompt, txt_res}
+};
 
 mod ais;
 mod config;
 mod error;
 mod robert;
 mod utils;
+mod web;
+mod model;
 
 const DEFAULT_DIR: &str = "robert";
 
@@ -43,66 +49,32 @@ impl Cmd {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     tracing_subscriber::registry()
         .with(fmt::Layer::default())
         .with(EnvFilter::from_default_env())
         .try_init()
         .expect("Erro to initialize tracing");
 
-    let routes_hello = Router::new().route(
-        "/hello",
-        get(|| async { Html("Hello <strong>World!!!</strong>")})
-    );
+    let (robert, conv) = start_robert().await?;
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
-    axum::serve(listener, routes_hello).await.unwrap();
-    info!();
+    let robert_controller = RobertController::new(robert, conv).await?;
 
-    // println!("{} Initializing chat!", ico_check());
+    let routes_all = Router::new()
+        .merge(web::routes_chat::routes(robert_controller));
 
-    // match start().await {
-    //     Ok(_) => println!("\nTchau!\n"),
-    //     Err(e) => println!("\nError: {}\n", e),
-    // }
-    
-}
-
-async fn start() -> Result<()> {
-    let mut robert = Robert::init_from_dir(DEFAULT_DIR, false).await?;
-
-    let mut conv = robert.load_or_create_conv(false).await?;
-
-    loop {
-        println!();
-        let input = prompt("Ask away")?;
-        let cmd = Cmd::from_input(input);
-
-        match cmd {
-            Cmd::Quit => break,
-            Cmd::Chat(msg) => {
-                let res = robert.chat(&conv, &msg).await?;
-                let res = wrap(&res, 80).join("\n");
-                println!("{} {}", ico_res(), txt_res(res));
-            },
-            Cmd::RefreshAll => {
-                robert = Robert::init_from_dir(DEFAULT_DIR, true).await?;
-                conv = robert.load_or_create_conv(true).await?;
-            },
-            Cmd::RefreshConv => {
-                conv = robert.load_or_create_conv(true).await?;
-            },
-            Cmd::RefreshInst => {
-                robert = Robert::init_from_dir(DEFAULT_DIR, true).await?;
-                conv = robert.load_or_create_conv(true).await?;
-            },
-            Cmd::RefreshFiles => {
-                robert.upload_files(true).await?;
-                conv = robert.load_or_create_conv(true).await?;
-            },
-            
-        }
-    }
+    let addr = "0.0.0.0:8000";
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+    info!("Listening {}", addr);
+    axum::serve(listener, routes_all).await.unwrap();
 
     Ok(())
+}
+
+async fn start_robert() -> Result<(Robert, Conv)> {
+    let robert = Robert::init_from_dir(DEFAULT_DIR, false).await?;
+
+    let conv = robert.load_or_create_conv(false).await?;
+
+    Ok((robert, conv))
 }
