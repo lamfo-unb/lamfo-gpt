@@ -5,6 +5,6 @@ services:
     build:
       context: .
     env_file:
-      -./docker_env_files/.env
+      - ./docker_env_files/.env
     ports:
       - "8000:8000"
