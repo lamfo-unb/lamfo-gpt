@@ -1,5 +1,4 @@
 FROM messense/rust-musl-cross:x86_64-musl as builder
-ENV SQLX_OFFLINE=true
 WORKDIR /assist-lamfo
 COPY . .
 # Build application

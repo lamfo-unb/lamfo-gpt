@@ -2,10 +2,10 @@ version: '3'
 services:
   api:
     image: dauid64/assist-lamfo
+    env_file:
+      - ./docker_env_files/.env
     build:
       context: .
-    environment:
-      OPENAI_API_KEY: sk-proj-0mBmyCpFH0L3hWajdzHwT3BlbkFJX3w0GduftLHHbypGYFAF
-      RUST_LOG: assist_lamfo=info
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
