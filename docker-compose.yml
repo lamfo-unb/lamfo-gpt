@@ -2,8 +2,6 @@ version: '3'
 services:
   api:
     image: dauid64/assist-lamfo
-    env_file:
-      - ./docker_env_files/.env
     build:
       context: .
     environment:
