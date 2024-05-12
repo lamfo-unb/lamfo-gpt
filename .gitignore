@@ -1,5 +1,3 @@
 /target
-config.toml
 robert/.robert/files/*
 robert/.robert/*.*
-docker_env_files/.env
