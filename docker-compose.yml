@@ -10,7 +10,8 @@ services:
       - "8000:8000"
   nginx:
     image: dauid64/nginx
-    build: ./nginx
+    build: 
+      context: ./nginx
     ports:
       - "80:80"
     depends_on:

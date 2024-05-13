@@ -1,10 +1,10 @@
-use axum::{extract::State, routing::get, Json, Router};
+use axum::{extract::State, routing::post, Json, Router};
 use serde::{Deserialize, Serialize};
 use crate::{model::RobertController, web::error::{Result, Error}};
 
 pub fn routes(robert_controller: RobertController) -> Router {
     Router::new()
-        .route("/api/robert/chat", get(robert_chat)
+        .route("/api/robert/chat", post(robert_chat)
         .with_state(robert_controller)
     )
 }
