@@ -4,7 +4,7 @@ use crate::{model::RobertController, web::error::{Result, Error}};
 
 pub fn routes(robert_controller: RobertController) -> Router {
     Router::new()
-        .route("/robert/chat", get(robert_chat)
+        .route("/api/robert/chat", get(robert_chat)
         .with_state(robert_controller)
     )
 }

@@ -8,3 +8,9 @@ services:
       - ./docker_env_files/.env
     ports:
       - "8000:8000"
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api
