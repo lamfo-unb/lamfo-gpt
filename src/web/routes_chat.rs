@@ -1,11 +1,17 @@
-use axum::{extract::State, routing::post, Json, Router};
+use axum::{extract::State, http::{header::CONTENT_TYPE, Method}, routing::post, Json, Router};
 use serde::{Deserialize, Serialize};
+use tower_http::cors::{Any, CorsLayer};
 use crate::{model::RobertController, web::error::{Result, Error}};
 
 pub fn routes(robert_controller: RobertController) -> Router {
+    let cors = CorsLayer::new()
+        .allow_methods([Method::POST])
+        .allow_origin(Any)
+        .allow_headers([CONTENT_TYPE]);
     Router::new()
         .route("/api/robert/chat", post(robert_chat)
         .with_state(robert_controller)
+        .layer(cors)
     )
 }
 
