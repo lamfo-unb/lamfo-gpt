@@ -1,6 +1,7 @@
-use axum::{response::Html, routing::get, Router};
+use axum::{http::Method, response::Html, routing::get, Router};
 use robert::Conv;
 use textwrap::wrap;
+use tower_http::cors::{Any, CorsLayer};
 use tracing::info;
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
@@ -61,7 +62,8 @@ async fn main() -> Result<()> {
     let robert_controller = RobertController::new(robert, conv).await?;
 
     let routes_all = Router::new()
-        .merge(web::routes_chat::routes(robert_controller));
+        .merge(web::routes_chat::routes(robert_controller))
+        .layer(CorsLayer::new().allow_methods([Method::GET, Method::POST]).allow_origin(Any));
 
     let addr = "0.0.0.0:8000";
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
