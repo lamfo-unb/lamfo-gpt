@@ -63,7 +63,7 @@ async fn main() -> Result<()> {
 
     let routes_all = Router::new()
         .merge(web::routes_chat::routes(robert_controller))
-        .layer(CorsLayer::new().allow_headers(Any).allow_methods([Method::GET, Method::POST]).allow_origin(Any));
+        .layer(CorsLayer::new().allow_headers(Any).allow_methods([Method::GET, Method::POST, Method::OPTIONS]).allow_origin(Any));
 
     let addr = "0.0.0.0:8000";
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
