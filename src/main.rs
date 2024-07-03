@@ -65,7 +65,7 @@ async fn main() -> Result<()> {
         .merge(web::routes_chat::routes(robert_controller))
         .layer(CorsLayer::permissive());
 
-    let addr = "0.0.0.0:8000";
+    let addr = "0.0.0.0:3000";
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     info!("Listening {}", addr);
     axum::serve(listener, routes_all).await.unwrap();

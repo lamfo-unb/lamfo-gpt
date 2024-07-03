@@ -7,12 +7,12 @@ services:
     env_file:
       - ./docker_env_files/.env
     ports:
-      - "8000:8000"
-  nginx:
-    image: dauid64/nginx
-    build: 
-      context: ./nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - api
+      - "3000:3000"
+  # nginx:
+  #   image: dauid64/nginx
+  #   build: 
+  #     context: ./nginx
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - api
