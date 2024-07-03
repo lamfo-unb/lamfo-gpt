@@ -59,13 +59,10 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install sshpass
       
-      - name: Copy docker_env_files folder to droplet
-        run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r docker_env_files root@${{ vars.DROPLET_IP }}:~
+      - name: Copy docker_env folder to droplet
+        run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r docker_env root@${{ vars.DROPLET_IP }}:~
 
-      - name: Copy .robert folder to droplet
-        run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r robert root@${{ vars.DROPLET_IP }}:~
-    
-      - name: Copy docker-compose.yml to droplet
+      - name: Copy docker-compose-deploy.yml to droplet
         run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.yml root@${{ vars.DROPLET_IP }}:~
 
       - name: Deploy
@@ -78,6 +75,6 @@ jobs:
             cd ~
             export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             export RUST_LOG=assist_lamfo=info
-            docker compose down
-            docker compose pull
-            docker compose up -d
+            docker compose -f docker-compose-deploy.yml down
+            docker compose -f docker-compose-deploy.yml pull
+            docker compose -f docker-compose-deploy.yml up -d

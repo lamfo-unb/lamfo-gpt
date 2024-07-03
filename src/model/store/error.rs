@@ -1,14 +1,10 @@
-use crate::{ais, model, robert, utils};
-use derive_more::From;
+use serde::Serialize;
 
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[derive(Debug, From)]
+#[derive(Debug, Serialize, Clone)]
 pub enum Error {
-    ConfigMissingEnv(&'static str),
-    FailedToCreateAssistant(ais::error::Error),
-    UtilsError(utils::error::Error),
-    Model(model::Error)
+    FailToCreatePool(String)
 }
 
 // region:    --- Error Boilerplate

@@ -1,40 +1,42 @@
-use axum::{extract::State, http::{header::CONTENT_TYPE, Method}, routing::post, Json, Router};
+use axum::{extract::State, routing::post, Json, Router};
 use serde::{Deserialize, Serialize};
-use tower_http::cors::{Any, CorsLayer};
-use crate::{model::RobertController, web::error::{Result, Error}};
+use serde_json::{json, Value};
+use tower_sessions::Session;
+use crate::{model::{message::{MessageBmc, MessageForCreate}, ModelManager}, web::error::Result};
 
-pub fn routes(robert_controller: RobertController) -> Router {
-    let cors = CorsLayer::new()
-        .allow_methods([Method::POST])
-        .allow_origin(Any)
-        .allow_headers([CONTENT_TYPE]);
+pub fn routes(mm: ModelManager) -> Router {
     Router::new()
         .route("/api/robert/chat", post(robert_chat)
-        .with_state(robert_controller)
-        .layer(cors)
+        .with_state(mm)
     )
 }
 
 async fn robert_chat(
-    State(rc): State<RobertController>,
+    session: Session,
+    State(mm): State<ModelManager>,
     Json(message_payload): Json<MessagePayLoad>,
-) -> Result<Json<MessagePayLoad>> {
-    let robert = rc.robert;
-    let conv = rc.conv;
-    let message = message_payload.message;
+) -> Result<Json<Value>> {
+    let content = message_payload.content;
+    let session_id: String = session.get("session_id").await.unwrap().unwrap();
     
-    let res = robert.chat(&conv, &message).await.map_err(|_| Error::SendingMessageChatError)?;
+    let message_c = MessageForCreate {
+        content,
+        session_id,
+        typed_role: "user".to_string(),
+    };
+
+    let id = MessageBmc::create(&mm, message_c).await?;
 
     Ok(
         Json(
-            MessagePayLoad {
-                message: res
-            }
+            json!({
+                "message": id
+            })
         )
     )
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct MessagePayLoad {
-    pub message: String
+    pub content: String
 }

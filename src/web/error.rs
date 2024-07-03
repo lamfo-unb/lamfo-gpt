@@ -1,12 +1,20 @@
-use axum::{http::StatusCode, response::{IntoResponse, Response}};
+use axum::{
+    http::StatusCode,
+    response::{IntoResponse, Response},
+};
+use derive_more::From;
 use serde::Serialize;
 use tracing::debug;
 
+use crate::model;
+
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, From)]
 pub enum Error {
-    SendingMessageChatError
+    SendingMessageChatError,
+    SessionError(String),
+    Model(model::Error),
 }
 
 // region:    --- Error Boilerplate

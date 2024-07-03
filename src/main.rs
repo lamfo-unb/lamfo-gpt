@@ -1,13 +1,13 @@
-use axum::{http::Method, response::Html, routing::get, Router};
-use robert::Conv;
-use textwrap::wrap;
-use tower_http::cors::{Any, CorsLayer};
+use axum::{middleware, Router};
+use model::ModelManager;
+use tower::ServiceBuilder;
+use tower_http::cors::CorsLayer;
+use tower_sessions::{cookie::time::Duration, Expiry, MemoryStore, SessionManagerLayer};
 use tracing::info;
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+use web::mw_session::mw_session;
 
-use crate::{
-    error::Result, model::RobertController, robert::Robert, utils::cli::{ico_check, ico_res, prompt, txt_res}
-};
+use crate::error::Result;
 
 mod ais;
 mod config;
@@ -16,38 +16,7 @@ mod robert;
 mod utils;
 mod web;
 mod model;
-
-const DEFAULT_DIR: &str = "robert";
-
-#[derive(Debug)]
-enum Cmd {
-    Quit,
-    Chat(String),
-    RefreshAll,
-    RefreshConv,
-    RefreshInst,
-    RefreshFiles,
-}
-
-impl Cmd {
-    fn from_input(input: impl Into<String>) -> Self {
-        let input = input.into();
-
-        if input == "/q" {
-            Self::Quit
-        } else if input == "/r" || input == "/ra" {
-            Self::RefreshAll
-        } else if input == "/ri" {
-            Self::RefreshInst
-        } else if input == "/rf" {
-            Self::RefreshFiles
-        } else if input == "/rc" {
-            Self::RefreshConv
-        } else {
-            Self::Chat(input.to_string())
-        }
-    }
-}
+mod _dev_utils;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -57,13 +26,24 @@ async fn main() -> Result<()> {
         .try_init()
         .expect("Erro to initialize tracing");
 
-    let (robert, conv) = start_robert().await?;
+    _dev_utils::init_dev().await;
 
-    let robert_controller = RobertController::new(robert, conv).await?;
+    let mm = ModelManager::new().await?;
+
+    // let robert_controller = RobertController::new(robert, conv).await?;
+
+    let session_store = MemoryStore::default();
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_secure(false)
+        .with_expiry(Expiry::OnInactivity(Duration::hours(1)));
 
     let routes_all = Router::new()
-        .merge(web::routes_chat::routes(robert_controller))
-        .layer(CorsLayer::permissive());
+        .merge(web::routes_chat::routes(mm))
+        .layer(ServiceBuilder::new()
+            .layer(CorsLayer::permissive())
+            .layer(session_layer)
+            .layer(middleware::from_fn(mw_session))
+        );
 
     let addr = "0.0.0.0:3000";
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
@@ -71,12 +51,4 @@ async fn main() -> Result<()> {
     axum::serve(listener, routes_all).await.unwrap();
 
     Ok(())
-}
-
-async fn start_robert() -> Result<(Robert, Conv)> {
-    let robert = Robert::init_from_dir(DEFAULT_DIR, false).await?;
-
-    let conv = robert.load_or_create_conv(false).await?;
-
-    Ok((robert, conv))
 }

@@ -1,14 +1,12 @@
 pub type Result<T> = core::result::Result<T, Error>;
 use async_openai::{error::OpenAIError, types::RunStatus};
 use derive_more::From;
+use serde::Serialize;
 
-#[derive(Debug, From)]
+#[derive(Debug, From, Serialize, Clone)]
 pub enum Error {
-    OpenAIError(OpenAIError),
-    ConsoleWriteError(std::io::Error),
-    WhileRunError(RunStatus),
-    GetMessageError(std::string::String),
-    MessageImageNotSupportYet,
+    OpenAIError(String),
+    NoRoleDefined,
 }
 
 // region:    --- Error Boilerplate

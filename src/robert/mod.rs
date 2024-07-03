@@ -1,183 +1,43 @@
-use std::{ fs, path::{Path, PathBuf}};
+use crate::{ais::{message::{self, Message}, OaClient}, config::config};
 
-use derive_more::{Deref, From};
-use serde::{Deserialize, Serialize};
-use tracing::info;
+mod error;
 
-use crate::{ais::{asst::{self, AsstId, ThreadId}, new_oa_client, OaClient}, utils::{cli::ico_check, files::{bundle_to_file, bundle_to_pdf, list_files, load_from_json, load_from_toml, read_to_string, save_to_json}}};
+use crate::robert::error::Result;
 
-use self::config::Config;
-use crate::robert::error::{Result, Error};
-
-mod config;
-pub mod error;
-
-const ROBERT_TOML: &str = "robert.toml";
-
-#[derive(Debug, Clone)]
-pub struct Robert {
-    dir: PathBuf,
-    oac: OaClient,
-    asst_id: AsstId,
-    config: Config,
+pub struct RobertAI {
+    pub model: String,
+    pub messages: Vec<Message>
 }
 
-#[derive(Clone, Debug, From, Deref, Serialize, Deserialize)]
-pub struct Conv {
-    thread_id: ThreadId,
-}
-
-impl Robert{}
-
-impl Robert{
-    pub fn name(&self) -> &str {
-        &self.config.name
-    }
-
-    pub async fn init_from_dir(dir: impl AsRef<Path>, recreate_asst: bool) -> Result<Self> {
-        let dir = dir.as_ref();
-        let config: Config = load_from_toml(dir.join(ROBERT_TOML))?;
-
-        let oac = new_oa_client()?;
-        let asst_id = asst::load_or_create_asst(&oac, (&config).into(), recreate_asst).await?;
-
-        let robert = Robert {
-            dir: dir.to_path_buf(),
-            oac,
-            asst_id,
-            config
-        };
-
-        robert.upload_instructions().await?;
-
-        robert.upload_files(false).await?;
-
-        Ok(robert)
-    }
-
-    pub async fn upload_files(&self, recreate: bool) -> Result<u32> {
-        let mut num_uploaded = 0;
-
-        let data_files_dir = self.data_files_dir()?;
-
-        let exclude_element = format!("*{}*", &self.asst_id);
-        for file in list_files(
-            &data_files_dir, 
-            Some(&["*.pdf", "*.md"]), 
-            Some(&[&exclude_element]),
-        )? {
-            let file_str = file.to_string_lossy();
-
-            if !file_str.contains(".robert") {
-                return Err(Error::ShouldNotDeleteError(file_str.to_string()))
-            }
-            fs::remove_file(&file)?;
-        }   
-
-        for bundle in self.config.file_bundles.iter() {
-            let src_dir = self.dir.join(&bundle.src_dir);
-            if src_dir.is_dir() {
-                let src_globs: Vec<&str> =
-                    bundle.src_globs.iter().map(AsRef::as_ref).collect();
-                
-                let files = list_files(
-                    &src_dir, 
-                    Some(&src_globs), 
-                    None
-                )?;
-
-                if !files.is_empty() {
-                    let bundle_file_name = format!(
-                        "{}-{}-bundle-{}.{}",
-                        self.name(),
-                        bundle.bundle_name,
-                        self.asst_id,
-                        bundle.dst_ext
-                    );
-
-                    let bundle_file = self.data_files_dir()?.join(bundle_file_name);
-
-                    let force_reupload = recreate || !bundle_file.exists();
-
-                    if bundle.dst_ext == "pdf" {
-                        bundle_to_pdf(files, &bundle_file)?;
-                    } else {
-                        bundle_to_file(files, &bundle_file)?;
-                    }
-
-                    let (_, uploaded) = asst::upload_file_by_name(
-                        &self.oac, 
-                        &self.asst_id, 
-                        &bundle_file, 
-                        force_reupload
-                    )
-                    .await?;
-
-                    if uploaded {
-                        num_uploaded += 1;
-                    }
-                }
-            }
-        };
-
-        Ok(num_uploaded)
-    }
-
-    pub async fn upload_instructions(&self) -> Result<bool> {
-        let file = self.dir.join(&self.config.instructions_file);
-        if file.exists() {
-            let inst_content = read_to_string(&file)?;
-            asst::upload_instructions(&self.oac, &self.asst_id, inst_content).await?;
-            info!("{} Instructions uploaded", ico_check());
-            Ok(true)
-        } else {
-            Ok(false)
+impl RobertAI {
+    pub fn new(messages: Vec<Message>) -> RobertAI {
+        RobertAI {
+            model: config().model_chat_oa.clone(),
+            messages: messages
         }
     }
 
-    pub async fn load_or_create_conv(&self, recreate: bool) -> Result<Conv> {
-        let conv_file = self.data_dir()?.join("conv.json");
+    pub fn get_initial_system_msg() -> Message {
+        let initial_message = Message {
+            content: format!("
+            Your name is Robert and is specialist information of LAMFO (Machine Learning Laboratory in Finance and Organizations).
 
-        if recreate && conv_file.exists() {
-            fs::remove_file(&conv_file)?;
-        }
+            If you area asked about anything to do not with LAMFO,
+            Answer that I answer omly questions about LAMFO.
 
-        let conv = if let Ok(conv) = load_from_json::<Conv>(&conv_file) {
-            asst::get_thread(&self.oac, &conv.thread_id)
-                .await
-                .map_err(|_| format!("Cannot find thread_id for {:?}", conv))?;
-            info!("{} Conversation loaded", ico_check());
-            conv
-        } else {
-            let thread_id = asst::create_thread(&self.oac).await?;
-            info!("{} Conversation created", ico_check());
-            let conv = thread_id.into();
-            save_to_json(&conv_file, &conv)?;
-            conv
+            If you are asked about LAMFO,
+            Answer that LAMFO is a best laboratory.
+            "),
+            role: message::TypeRole::System
         };
 
-        Ok(conv)
+        initial_message
     }
 
-    pub async fn chat(&self, conv: &Conv, msg: &str) -> Result<String> {
-        let res = asst::run_thread_msg(&self.oac, &self.asst_id, &conv.thread_id, msg)
-            .await?;
+    pub async fn send_message(&mut self, oac: &OaClient, messages: Vec<Message>) -> Result<()> {
+        let new_message = Message::send_message(oac, messages).await?;
+        self.messages.push(new_message);
 
-        Ok(res)
-    }
-}
-
-impl Robert {
-    fn data_dir(&self) -> Result<PathBuf> {
-        let data_dir = self.dir.join(".robert");
-        Ok(data_dir)
-    }
-
-    fn data_files_dir(&self) -> Result<PathBuf> {
-        let dir = self.data_dir()
-        .map_err(|_| Error::DataDirNotFound)?
-        .join("files");
-
-        Ok(dir)
+        Ok(())
     }
 }

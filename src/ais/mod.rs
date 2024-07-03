@@ -1,9 +1,9 @@
 use async_openai::{config::OpenAIConfig, Client};
 use crate::{ais::error::Result, config::config};
+pub use crate::ais::error::Error;
 
 pub mod error;
-pub mod asst;
-pub mod msg;
+pub mod message;
 
 pub type OaClient = Client<OpenAIConfig>;
 

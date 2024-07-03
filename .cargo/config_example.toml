@@ -1,3 +1,9 @@
 [env]
 
 OPENAI_API_KEY="CHANGE-ME"
+
+RUST_LOG="assist_lamfo=debug"
+
+DB_URL="postgres://user:pwd@localhost/db"
+
+MODEL_CHAT_OA="gpt-3.5-turbo"

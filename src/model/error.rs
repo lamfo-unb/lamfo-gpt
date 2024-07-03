@@ -1,14 +1,28 @@
-use crate::{ais, model, robert, utils};
-use derive_more::From;
+use serde::Serialize;
+
+use crate::ais;
+
+use super::store;
 
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[derive(Debug, From)]
+#[derive(Debug, Serialize, Clone)]
 pub enum Error {
-    ConfigMissingEnv(&'static str),
-    FailedToCreateAssistant(ais::error::Error),
-    UtilsError(utils::error::Error),
-    Model(model::Error)
+    Store(store::Error),
+    Sqlx(String),
+    Ais(ais::Error)
+}
+
+impl From<store::Error> for Error {
+	fn from(val: store::Error) -> Self {
+		Self::Store(val)
+	}
+}
+
+impl From<ais::Error> for Error {
+	fn from(val: ais::Error) -> Self {
+		Self::Ais(val)
+	}
 }
 
 // region:    --- Error Boilerplate
