@@ -1,4 +1,7 @@
 use derive_more::From;
+use serde::Serialize;
+
+use crate::ais;
 
 pub type Result<T> = core::result::Result<T, Error>;
 
@@ -11,7 +14,8 @@ pub enum Error {
     GlobError(globset::Error),
     IsNotFile(String),
     SerdeJsonError(serde_json::Error),
-    PromptError(dialoguer::Error)
+    PromptError(dialoguer::Error),
+	Ais(ais::Error)
 }
 
 impl From<globset::Error> for Error {
@@ -35,6 +39,12 @@ impl From<serde_json::Error> for Error {
 impl From<dialoguer::Error> for Error {
 	fn from(val: dialoguer::Error) -> Self {
 		Self::PromptError(val)
+	}
+}
+
+impl From<ais::Error> for Error {
+	fn from(val: ais::Error) -> Self {
+		Self::Ais(val)
 	}
 }
 

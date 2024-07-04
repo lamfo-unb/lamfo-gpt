@@ -1,18 +1,19 @@
 use std::str::FromStr;
 
 use async_openai::types::{ChatCompletionRequestAssistantMessageArgs, ChatCompletionRequestSystemMessageArgs, ChatCompletionRequestUserMessageArgs, CreateChatCompletionRequestArgs, Role};
+use serde::Serialize;
 
 use crate::{ais::{ Error, Result }, config::config};
 
 use super::OaClient;
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct Message {
     pub role: TypeRole,
     pub content: String
 }
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub enum TypeRole {
     Assistant,
     User,
@@ -20,14 +21,25 @@ pub enum TypeRole {
 }
 
 impl FromStr for TypeRole {
-    type Err = ();
+    type Err = Error;
 
-    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "user" => Ok(TypeRole::User),
             "assistant" => Ok(TypeRole::Assistant),
             "system" => Ok(TypeRole::System),
-            _ => Err(())
+            _ => Err(Error::NoRoleDefined)
+        }
+    }
+}
+
+
+impl ToString for TypeRole {
+    fn to_string(&self) -> String {
+        match self {
+            TypeRole::Assistant => "assistant".to_string(),
+            TypeRole::User => "user".to_string(),
+            TypeRole::System => "system".to_string(),
         }
     }
 }

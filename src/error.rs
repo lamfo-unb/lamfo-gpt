@@ -6,9 +6,9 @@ pub type Result<T> = core::result::Result<T, Error>;
 #[derive(Debug, From)]
 pub enum Error {
     ConfigMissingEnv(&'static str),
-    FailedToCreateAssistant(ais::error::Error),
+    Ais(ais::error::Error),
     UtilsError(utils::error::Error),
-    Model(model::Error)
+    Model(model::Error),
 }
 
 // region:    --- Error Boilerplate

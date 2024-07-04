@@ -6,15 +6,19 @@ use derive_more::From;
 use serde::Serialize;
 use tracing::debug;
 
-use crate::model;
+use crate::{ais, model, utils};
 
 pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug, Clone, Serialize, From)]
 pub enum Error {
-    SendingMessageChatError,
     SessionError(String),
     Model(model::Error),
+    #[from(ignore)]
+    UuidError(String),
+    Ais(ais::Error),
+    #[from(ignore)]
+    Utils(String)
 }
 
 // region:    --- Error Boilerplate
