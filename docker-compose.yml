@@ -1,5 +1,16 @@
 version: '3'
 services:
+  api:
+    image: dauid64/assist-lamfo
+    build:
+      context: .
+    env_file:
+      - ./docker_env/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - qdrant
   db:
     image: postgres:16
     env_file:
