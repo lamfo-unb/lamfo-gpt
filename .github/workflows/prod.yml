@@ -59,8 +59,8 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install sshpass
       
-      - name: Copy docker_env_files folder to droplet
-        run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r docker_env_files root@${{ vars.DROPLET_IP }}:~
+      - name: Copy docker_env folder to droplet
+        run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r docker_env root@${{ vars.DROPLET_IP }}:~
 
       - name: Copy .robert folder to droplet
         run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no -r robert root@${{ vars.DROPLET_IP }}:~
