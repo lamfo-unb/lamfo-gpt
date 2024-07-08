@@ -8,6 +8,9 @@ services:
       - ./docker_env/.env
     ports:
       - "3000:3000"
+    depends_on:
+      - db
+      - qdrant
   db:
     image: postgres:16
     env_file:
