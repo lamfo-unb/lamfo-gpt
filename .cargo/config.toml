@@ -6,4 +6,4 @@ RUST_LOG="assist_lamfo=debug"
 
 DB_URL="postgres://app_user:dev_only_pwd@localhost/app_db"
 
-MODEL_CHAT_OA="gpt-3.5-turbo"
+MODEL_CHAT_OA="gpt-4o"
