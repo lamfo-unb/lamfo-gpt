@@ -1,7 +1,7 @@
 use tokio::sync::OnceCell;
 use tracing::info;
 
-use crate::model::ModelManager;
+use crate::manager::AppManager;
 
 mod dev_db;
 
@@ -16,14 +16,14 @@ pub async fn init_dev() {
     .await;
 }
 
-pub async fn init_test() -> ModelManager {
-    static INIT: OnceCell<ModelManager> = OnceCell::const_new();
+pub async fn init_test() -> AppManager {
+    static INIT: OnceCell<AppManager> = OnceCell::const_new();
 
-    let mm = INIT.get_or_init(|| async {
+    let app_manager = INIT.get_or_init(|| async {
         init_dev().await;
-        ModelManager::new().await.unwrap()
+        AppManager::new().await.unwrap()
     })
     .await;
 
-    mm.clone()
+    app_manager.clone()
 }

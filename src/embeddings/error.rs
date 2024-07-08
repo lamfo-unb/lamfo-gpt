@@ -1,11 +1,14 @@
-pub type Result<T> = core::result::Result<T, Error>;
+use async_openai::error::OpenAIError;
 use derive_more::From;
-use serde::Serialize;
+use qdrant_client::QdrantError;
 
-#[derive(Debug, From, Serialize, Clone)]
+pub type Result<T> = core::result::Result<T, Error>;
+
+#[derive(Debug, From)]
 pub enum Error {
-    OpenAIError(String),
-    NoRoleDefined,
+    OpenAIError(OpenAIError),
+    QdrantError(QdrantError),
+    PromptError,
 }
 
 // region:    --- Error Boilerplate

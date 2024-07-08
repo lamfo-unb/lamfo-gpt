@@ -1,0 +1,26 @@
+Sobre o LAMFO:
+
+O Laboratório de Aprendizado de Máquina em Finanças e Organizações (LAMFO) é um centro destinado a desenvolver, 
+aplicar e estudar fenômenos organizacionais nas mais diversas áreas como Marketing, Logística, Administração Pública, 
+Gestão de Pessoas e Finanças.
+
+A equipe é composta por discentes dos cursos de Administração (graduação e pós-graduação), 
+profissionais das mais diversas áreas da Administração e professores da Universidade de Brasília. 
+O uso do Aprendizado de Máquina tem sido cada vez mais utilizado em Ciências Sociais Aplicadas 
+como Economia, Contabilidade e Administração. A proposta é desenvolver algoritmos capazes de reconhecer 
+padrões nos dados visando objetivos estipulados pelos gestores, analistas ou pesquisadores.
+
+O Laboratório de Aprendizado de Máquina em Finanças e Organizações
+atua em parceria com entes da Administração Pública federal e regional, iniciativa privada e demais pesquisadores de organizações
+e finanças na aplicação, compreensão e desenvolvimento de modelos de Aprendizado de Máquina.
+
+O Laboratório de Aprendizado de Máquina em Finanças e Organizações funciona na Universidade de Brasília desde 2016 desenvolvendo
+pesquisas de Data-Science com foco em aplicação de inteligência artificial. Os projetos de pesquisa do LAMFO seguem calendário
+próprio de desenvolvimento de cada equipe, e são feitas reuniões de acompanhamento quinzenais gerais do laboratório aos sábados.
+
+O Laboratório recebe novos pesquisadores todos os semestres, ao longo do período letivo da UnB. 
+O LAMFO desenvolve projetos de pesquisa acadêmica, projetos de mercado
+Projeto LAMFO-GPT Campus Party privado, bem como desenvolve pesquisa em parcerias com entes externos do setor público e privado.
+
+O LAMFO contém 46 pesquisadores, 26 projetos finalizados e 12 projetos em andamento.
+

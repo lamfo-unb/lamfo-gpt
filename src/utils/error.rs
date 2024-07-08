@@ -1,3 +1,5 @@
+use std::path::{Path, StripPrefixError};
+
 use derive_more::From;
 use serde::Serialize;
 
@@ -7,38 +9,21 @@ pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
-    CreateFileErro(std::io::Error),
-    FileNotFound(String),
-    ReadFileToStringErro(String),
-    ConvertStrFromTomlError,
-    GlobError(globset::Error),
-    IsNotFile(String),
-    SerdeJsonError(serde_json::Error),
-    PromptError(dialoguer::Error),
-	Ais(ais::Error)
+    FileErro(std::io::Error),
+	Ais(ais::Error),
+	StripPrefixFileError(StripPrefixError),
+	NotAvaliableError,
 }
 
-impl From<globset::Error> for Error {
-	fn from(val: globset::Error) -> Self {
-		Self::GlobError(val)
+impl From<StripPrefixError> for Error {
+	fn from(val: StripPrefixError) -> Self {
+		Self::StripPrefixFileError(val)
 	}
 }
 
 impl From<std::io::Error> for Error {
 	fn from(val: std::io::Error) -> Self {
-		Self::CreateFileErro(val)
-	}
-}
-
-impl From<serde_json::Error> for Error {
-	fn from(val: serde_json::Error) -> Self {
-		Self::SerdeJsonError(val)
-	}
-}
-
-impl From<dialoguer::Error> for Error {
-	fn from(val: dialoguer::Error) -> Self {
-		Self::PromptError(val)
+		Self::FileErro(val)
 	}
 }
 

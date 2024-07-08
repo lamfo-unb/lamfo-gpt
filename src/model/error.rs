@@ -10,7 +10,9 @@ pub type Result<T> = core::result::Result<T, Error>;
 pub enum Error {
     Store(store::Error),
     Sqlx(String),
-    Ais(ais::Error)
+    Ais(ais::Error),
+    Embedding(String),
+    Utils(String)
 }
 
 impl From<store::Error> for Error {

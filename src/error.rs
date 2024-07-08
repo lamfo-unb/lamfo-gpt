@@ -1,4 +1,6 @@
-use crate::{ais, model, robert, utils};
+use crate::model::store as DbStore;
+use crate::{ais, embeddings, model, utils};
+use crate::embeddings::store as QdrantStore;
 use derive_more::From;
 
 pub type Result<T> = core::result::Result<T, Error>;
@@ -9,6 +11,9 @@ pub enum Error {
     Ais(ais::error::Error),
     UtilsError(utils::error::Error),
     Model(model::Error),
+    Embedding(embeddings::error::Error),
+    Qdrant(QdrantStore::error::Error),
+    Postgres(DbStore::Error)
 }
 
 // region:    --- Error Boilerplate

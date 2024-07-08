@@ -1,19 +1,17 @@
 use super::Error;
-use crate::model::ModelManager;
-use crate::model::Result;
+use crate::{manager::AppManager, model::Result};
 use sqlb::HasFields;
-use uuid::Uuid;
 
 pub trait DbBmc {
     const TABLE: &'static str;
 }
 
-pub async fn create<MC, E>(mm: &ModelManager, data: E) -> Result<i64>
+pub async fn create<MC, E>(app_manager: &AppManager, data: E) -> Result<i64>
 where
     MC: DbBmc,
     E: HasFields,
 {
-    let db = mm.db();
+    let db = app_manager.db();
 
     let fields = data.not_none_fields();
     let (id,) = sqlb::insert()

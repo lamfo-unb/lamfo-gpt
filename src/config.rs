@@ -24,7 +24,7 @@ impl Config {
             Config {
                 openai_api_key: get_env("OPENAI_API_KEY")?,
                 db_url: get_env("DB_URL")?,
-                model_chat_oa: get_env("MODEL_CHAT_OA")?,
+                model_chat_oa: get_env("MODEL_CHAT_OA")?
             }
         )
     }

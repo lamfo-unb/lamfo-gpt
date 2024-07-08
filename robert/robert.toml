@@ -1,9 +1,0 @@
-name = "Robert"
-model = "gpt-3.5-turbo"
-instructions_file = "instructions.md"
-
-[[file_bundles]]
-bundle_name = "knowledge"
-src_dir = "files"
-src_globs = ["*.pdf"]
-dst_ext = "pdf"

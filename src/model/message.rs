@@ -2,11 +2,11 @@ use serde::Deserialize;
 use sqlb::{Fields, HasFields};
 use sqlx::{postgres::PgRow, FromRow};
 use uuid::Uuid;
-use crate::model::error::Error;
+use crate::{manager::AppManager, model::error::Error};
 
 use crate::model::Result;
 
-use super::{base::{self, DbBmc}, ModelManager};
+use super::base::{self, DbBmc};
 
 #[derive(Deserialize, Fields, Clone)]
 pub struct MessageForCreate {
@@ -43,16 +43,17 @@ pub trait MessagesBy: HasFields + for<'r> FromRow<'r, PgRow> + Unpin + Send {
 impl MessagesBy for Message{}
 
 impl MessageBmc {
-    pub async fn create(mm: &ModelManager ,message_c: MessageForCreate) -> Result<i64> {
-        base::create::<Self, _>(mm, message_c).await
+    pub async fn create(app_manager: &AppManager ,message_c: MessageForCreate) -> Result<i64> {
+        base::create::<Self, _>(app_manager, message_c).await
     }
 
-    pub async fn get_by_session_id<E>(mm: &ModelManager, session_id: Uuid) -> Result<Vec<E>> where E: MessagesBy {
-        let db = mm.db();
+    pub async fn get_by_session_id<E>(app_manager: &AppManager, session_id: Uuid) -> Result<Vec<E>> where E: MessagesBy {
+        let db = app_manager.db();
 
         let messages = sqlb::select()
             .table(Self::TABLE)
             .and_where("session_id", "=", session_id)
+            .order_by("id")
             .fetch_all::<_, E>(db)
             .await
             .map_err(|err| Error::Sqlx(err.to_string()))?;

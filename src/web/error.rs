@@ -6,7 +6,7 @@ use derive_more::From;
 use serde::Serialize;
 use tracing::debug;
 
-use crate::{ais, model, utils};
+use crate::{ais, model};
 
 pub type Result<T> = core::result::Result<T, Error>;
 
@@ -18,7 +18,9 @@ pub enum Error {
     UuidError(String),
     Ais(ais::Error),
     #[from(ignore)]
-    Utils(String)
+    Utils(String),
+    #[from(ignore)]
+    Embedding(String)
 }
 
 // region:    --- Error Boilerplate

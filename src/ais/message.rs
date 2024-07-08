@@ -1,23 +1,29 @@
 use std::str::FromStr;
 
-use async_openai::types::{ChatCompletionRequestAssistantMessageArgs, ChatCompletionRequestSystemMessageArgs, ChatCompletionRequestUserMessageArgs, CreateChatCompletionRequestArgs, Role};
+use async_openai::types::{
+    ChatCompletionRequestAssistantMessageArgs, ChatCompletionRequestSystemMessageArgs,
+    CreateChatCompletionRequestArgs, Role,
+};
 use serde::Serialize;
 
-use crate::{ais::{ Error, Result }, config::config};
+use crate::{
+    ais::{Error, Result},
+    config::config,
+};
 
 use super::OaClient;
 
 #[derive(Clone, Serialize)]
 pub struct Message {
     pub role: TypeRole,
-    pub content: String
+    pub content: String,
 }
 
 #[derive(Clone, Serialize)]
 pub enum TypeRole {
     Assistant,
     User,
-    System
+    System,
 }
 
 impl FromStr for TypeRole {
@@ -28,11 +34,10 @@ impl FromStr for TypeRole {
             "user" => Ok(TypeRole::User),
             "assistant" => Ok(TypeRole::Assistant),
             "system" => Ok(TypeRole::System),
-            _ => Err(Error::NoRoleDefined)
+            _ => Err(Error::NoRoleDefined),
         }
     }
 }
-
 
 impl ToString for TypeRole {
     fn to_string(&self) -> String {
@@ -54,29 +59,29 @@ impl Message {
             match message.role {
                 TypeRole::Assistant => {
                     let message_formatted = ChatCompletionRequestAssistantMessageArgs::default()
-                    .content(message.content)
-                    .build()
-                    .map_err(|err| Error::OpenAIError(err.to_string()))?
-                    .into();
+                        .content(message.content)
+                        .build()
+                        .map_err(|err| Error::OpenAIError(err.to_string()))?
+                        .into();
                     messages_formatted.push(message_formatted);
                 }
                 TypeRole::User => {
                     let message_formatted = ChatCompletionRequestAssistantMessageArgs::default()
-                    .content(message.content)
-                    .build()
-                    .map_err(|err| Error::OpenAIError(err.to_string()))?
-                    .into();
+                        .content(message.content)
+                        .build()
+                        .map_err(|err| Error::OpenAIError(err.to_string()))?
+                        .into();
                     messages_formatted.push(message_formatted);
                 }
                 TypeRole::System => {
                     let message_formatted = ChatCompletionRequestSystemMessageArgs::default()
-                    .content(message.content)
-                    .build()
-                    .map_err(|err| Error::OpenAIError(err.to_string()))?
-                    .into();
+                        .content(message.content)
+                        .build()
+                        .map_err(|err| Error::OpenAIError(err.to_string()))?
+                        .into();
                     messages_formatted.push(message_formatted);
                 }
-                _ => return Err(Error::NoRoleDefined)
+                _ => return Err(Error::NoRoleDefined),
             };
         }
 
@@ -86,7 +91,11 @@ impl Message {
             .build()
             .map_err(|err| Error::OpenAIError(err.to_string()))?;
 
-        let response = oac.chat().create(request).await.map_err(|err| Error::OpenAIError(err.to_string()))?;
+        let response = oac
+            .chat()
+            .create(request)
+            .await
+            .map_err(|err| Error::OpenAIError(err.to_string()))?;
 
         let new_msg_role = response.choices[0].message.role;
         let response_role: TypeRole;
@@ -95,7 +104,7 @@ impl Message {
             Role::System => response_role = TypeRole::System,
             Role::Assistant => response_role = TypeRole::Assistant,
             Role::User => response_role = TypeRole::User,
-            _ => return Err(Error::NoRoleDefined)
+            _ => return Err(Error::NoRoleDefined),
         }
 
         let response_msg = Message {

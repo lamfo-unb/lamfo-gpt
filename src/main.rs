@@ -1,5 +1,6 @@
 use axum::{middleware, Router};
-use model::ModelManager;
+use embeddings::{embed_documentation, get_contents};
+use manager::AppManager;
 use tower::ServiceBuilder;
 use tower_http::cors::CorsLayer;
 use tower_sessions::{cookie::time::Duration, Expiry, MemoryStore, SessionManagerLayer};
@@ -9,14 +10,16 @@ use web::mw_session::mw_session;
 
 use crate::error::Result;
 
+mod _dev_utils;
 mod ais;
 mod config;
+mod embeddings;
 mod error;
+mod model;
 mod robert;
 mod utils;
 mod web;
-mod model;
-mod _dev_utils;
+mod manager;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -28,7 +31,16 @@ async fn main() -> Result<()> {
 
     _dev_utils::init_dev().await;
 
-    let mm = ModelManager::new().await?;
+    let app_manager = AppManager::new().await?;
+
+    // Embedding
+    embed_documentation(
+        app_manager.oac(),
+        &mut app_manager.embedding_state().vector_db.clone(),
+        &app_manager.embedding_state().files,
+    )
+    .await?;
+    info!("Embedding Up");
 
     // let robert_controller = RobertController::new(robert, conv).await?;
 
@@ -38,11 +50,12 @@ async fn main() -> Result<()> {
         .with_expiry(Expiry::OnInactivity(Duration::hours(1)));
 
     let routes_all = Router::new()
-        .merge(web::routes_chat::routes(mm))
-        .layer(ServiceBuilder::new()
-            .layer(CorsLayer::permissive())
-            .layer(session_layer)
-            .layer(middleware::from_fn(mw_session))
+        .merge(web::routes_chat::routes(app_manager))
+        .layer(
+            ServiceBuilder::new()
+                .layer(CorsLayer::permissive())
+                .layer(session_layer)
+                .layer(middleware::from_fn(mw_session)),
         );
 
     let addr = "0.0.0.0:3000";

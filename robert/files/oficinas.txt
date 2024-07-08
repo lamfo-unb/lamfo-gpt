@@ -1,0 +1,45 @@
+Dentre as oficinas realizadas no LAMFO para que os instigar os participantes e ouvintes 
+aprender mais sobre a área, estão baixo alguns temas que já abordamos em nossas oficinas.
+
+EnANPAD 2015
+Getting to the Basics: Dimensão VC e Generalização em Machine Learning
+Random Forest e LightGBM
+Restricted Boltzmann Machine (RBM)
+Support Vector Machine (SVM)
+Teste de Eventos
+Generalized Linear Models
+Self Organizing Maps
+Quantum: Physics & Computation
+Crash Course de amostragem
+Fatos Estilizados em Finanças
+Autoencoder
+Análise discriminante linear
+Feature Engineering
+Bibliometria & Meta-análise
+Generalized Method of Moments
+PROPENSITY SCORE MATCHING
+Modelagem de volatilidade no mercado de opções
+Redes Neurais Convolucionais
+Blockchain technology
+Dados em Painel
+Estatística Espacial
+Cálculo Estocástico
+Programação Dinâmica
+Oficina de Medidas Default
+COMPLEXIDADE TEMPORAL E ESPACIAL
+CLUSTERIZAÇÃO E K-MEANS
+Diagnóstico em modelagem
+Crash course: Teoria de finanças
+Probabilistic Graphical Models
+Programação Funcional - Analise de Dados
+Introdução a Banco de dados e Linguagem SQL
+Bank Stability and Systemic Risk: Competition, Concentration and Bailout Probability Approach
+Oficina LAMFO Anova & Manova
+Algoritmos evolutivos e programação genética
+Previsão de Fraudes em Seguros de Propriedade
+Rede Neural Convolucional e Rede Neural de Cápsula
+Feature Selection e Deep NNs para previsão dos preços de ações
+Modelagem de Volatilidade: ARCH, GARCH e MMAR
+Eficiência de Mercado e Random Walk
+Difference in differences (DID)
+Regression discontinuity design

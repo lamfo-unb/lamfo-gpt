@@ -1,0 +1,12 @@
+Seminários do LAMFO em IA:
+
+- Carolina Santos - Ética em ciência de dados
+- Thiago Marzagão - Ciência de dados & governo 
+- PEDRO ALBUQUERQUE - Let's Data Podcast
+- Comportamento e Consumo: Seminário e Lançamento do Estudo Anatel / Ibict
+- INTELIGÊNCIA ARTIFICIAL - 22º BATE-PAPO CIÊNCIA E TECNOLOGIA NO DIA A DIA
+- Carreira em Data Science e IA - Prof. Pedro Henrique Melo Albuquerque
+- Machine Learning em Finanças, Banking e Economia - Prof. Daniel Oliveira Cajueiro
+- Erros que Cometi - Matheus Facure
+- Fundamentos do Machine Learning, uma introdução sem matemática - Peng Yaohao
+- Minha experiência em tech companies, vida no exterior e como o LAMFO me ajudou chegar até aqui - Sarah Sabino

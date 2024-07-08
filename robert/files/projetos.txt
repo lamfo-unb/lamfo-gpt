@@ -1,0 +1,99 @@
+Listamos abaixo os projetos do LAMFO:
+
+Previsões de Candles e Imagens
+Publicado: 09/04/2021
+Descrição: Análise de gráficos de cotações com a utilização de Redes Neurais Convolucionais para previsões.
+Membros: Arthur Nunes Torres, Rafael Oliveira Garcêz de Mendonça, Vítor Bandeira Borges, Vinícius de Oliveira Watanabe, Rafael Morais
+
+Satisfação e Desempenho
+Publicado: 09/04/2021
+Descrição: Encontrar a relação entre satisfação do trabalhador com desempenho operacional das firmas. Para isso utiliza-se indicadores de satisfação e reviews dos funcionários e indicadores de desempenho econômico da firma.
+Membros: Pedro Albuquerque, Natasha Fogaça, Juliana N., Felipe Schiavon, João Gabriel Souza
+
+MCTI
+Publicado: 09/04/2021
+Descrição: Projeto de ciência de dados do Ministério de Ciência, Tecnologia e Inovações (MCTI), para implantar a automação do portfólio de produtos financeiros (PPF).
+Membros: Victor Rafael, Alixandro, Beatriz Simões, Fernanda Amorim, Hebert Kimura, Jairo Alves, João Gabriel, Lucas Moreira, Matheus Kempa, Rafael Moraes
+
+Covid Desigualdade
+Publicado: 09/04/2021
+Descrição: Em toda crise é comum observar um aumento da distância da renda entre os mais ricos e mais pobres. O presente projeto propõe analisar a relação e impacto entre desigualdade de renda e Covid. O tamanho do impacto na desigualdade de renda e como cada Estado se comportou (alterando ou não suas posições no rank de desigualdade)
+
+Lamfoot
+Publicado: 30/03/2021
+Descrição: Este projeto tem como objetivo prever, por meio de técnicas de Machine Learning, os resultados do Campeonato Italiano para a partir deles construir e validar estratégias de apostas baseadas nas análises e resultados dos modelos rodados. Sua base foi construída com a combinação de resultados e estatísticas reais das equipes, as cotações atualizadas de sites de apostas
+
+University of Essex & Microsoft Ai for Health- NLP para Covid-19
+Publicado: 01/10/2020
+Descrição: Misinformation can amplify humanity’s greatest challenges. A salient recent example of this is the COVID-19 pandemic, which has bred a multitude of falsehoods even as truth has increasingly become a matter of life and death; people share false claims about COVID-19, in part, because they simply fail to think sufficiently about whether or not content is accurate
+
+Covid-19 Modelling TaskForce: Modelagem Quantitativa para Estudos de Difusão e Impactos da Covid-19, com ênfase em Administração, Economia e Finanças
+Publicado: 20/06/2020
+Descrição: Este projeto de pesquisa envolve o desenvolvimento de modelos matemáticos e computacionais para análise quantitativa de fenômenos associados à Covid-19. O projeto explora métodos quantitativos variados para (i) a projeção do número de casos e óbitos por Covid-19 no Brasil e no mundo para (ii) a estimação da taxa de sub-notificação de casos de Covid-19 no Brasil
+
+Difusão de métodos quantitativos para análise de dados e tomada de decisão em administração e gestão
+Publicado: 26/05/2020
+Descrição: A Covid-19 tem gerado notícias e discussões de termos quantitativos como “crescimento exponencial”, “escala logarítmica”, “modelos epidemiológicos”, “estimação de parâmetros”, “simulação”, “testes”, “hipóteses”, etc. Todavia tais terminologias causam confusões e seus conceitos não são adequadamente compreendidos pela população em geral. O avanço da ciência e da tecnologia depende de um aumento do nível de conhecimento sobre métodos
+
+Covid-19 Databank
+Publicado: 22/05/2020
+Líder: Prof. Herbert Kimura
+Matrícula UnB: 1063588
+Unidade acadêmica da UnB: Faculdade de Economia, Administração, Contabilidade e Gestão de Políticas Públicas
+Email: herbert.kimura@gmail.com
+Link Cúrriculo Lattes: http://lattes.cnpq.br/2048706172366367
+Título da Proposta: LAMFO Covid-19 Databank
+Sumário Executivo da Proposta: A substancial quantidade de dados sobre a Covid-19 induz um maior nível informacional sobre a doença, sendo benéfica à sociedade
+
+Covid educação
+Publicado: 14/05/2020
+Descrição: Notícias sobre a Covid-19 estão sendo acompanhadas por termos como “crescimento exponencial”, “escala logarítmica”, “modelos epidemiológicos”, “estimação de parâmetros”, “simulação”, “testes”, “hipóteses”, etc… A despeito de amplamente utilizados pelos cientistas, esses termos, bem como outros conceitos quantitativos usuais em pesquisas científicas, não amplamente dominados pelo público em geral. Neste contexto, este projeto busca desenvolver atividades que possibilitem
+
+Covid subnotificação
+Publicado: 14/05/2020
+Descrição: Estudar os comportamentos de subnotificação de dados relacionados ao Covid-19 no Brasil utilizando metodologia econométricas espaciais como Tobler (1970) e especificamente em epidemiologia em Zhang et. al (2010). Objetivo – Estimar a subnotificação de dados de Covid-19 no Brasil.
+Líder: Daniel Oliveira Cajueiro, Alex Rodrigues do Nascimento, Igor Nascimento
+
+Covid Causuality isolamento
+Publicado: 14/05/2020
+Descrição: Seguindo a proposta de mensuração de modelos contrafactuais, este estudo irá buscar estimar os efeitos do confinamento/isolamento imposto pela covid-19. Para tal utilizar-se-á a metodologia contrafactual em alta dimensão em paineis de dados de Carvalho et. al (2018). Objetivo – Estimar e dimensionar os impactos gerados pelas políticas de confinamento/isolamento impostas pela Covid-19.
+Líder: Daniel Oliveira
+
+Covid projeções modelagem
+Publicado: 14/05/2020
+Descrição: Inicialmente, será conduzido um levantamento bibliográfico para identificar as principais modelagens quantitativas associadas (i) ao contágio e transmissão do Covid-19 e (ii) aos impactos econômicos e financeiros da pandemia. Técnicas que o LAMFO já vem desenvolvendo especificamente para a análise de Covid-19 incluem ARIMA, modelos SEIR, Lei de Benford, estatística- não-paramétrica, clusterização, etc… Posteriormente, serão implementados
+
+Covid raspagem
+Publicado: 14/05/2020
+Descrição: Este projeto tecnológico envolve o desenvolvimento de um repositório de dados, relatórios e notícias veiculadas sobre a Covid-19, notadamente publicadas em fontes confiáveis. Assim, o projeto contribui para a consolidação de dados sobre o Covid-19, constituindo-se em matéria-prima para a realização de pesquisas futuras. O repositório pode ser utilizado para, por exemplo, (i) explorar relacionamentos entre
+
+Consensus
+Publicado: 04/05/2020
+Descrição: O objetivo do projeto é a construção de um sistema especialista para sugestão de investimentos.
+Pesquisadores: Pedro Henrique Melo Albuquerque, Marcius Stefano
+
+REAL ESTATE
+Publicado: 24/04/2020
+Pesquisadores: Alfredo Rossi, Peng Yao Hao, Pedro Henrique Melo Albuquerque, Cayan Atreio Portela Bárcena Saavedra
+Descrição: O projeto tem como objetivo prever os preços dos imóveis por região do Distrito Federal, usando como base dados da Caixa Econômica Federal utilizando técnicas de deep learning (LSTM) e comparando com modelos de regressão tradicional.
+
+FEATURE SELECTION
+Publicado: 24/04/2020
+Pesquisadores: Cayan Atreio Portela Bárcena Saavedra, Peng Yao Hao, Herbert Kimura, Pedro Henrique Melo Albuquerque
+Descrição: Desafios inerentes à era do big data, como a alta dimensão, são cada vez mais comuns no aprendizado de máquina e no aprendizado estatístico. No âmbito de finanças, é possível observar esse evento referente ao grande número de indicadores presentes nas análises
+
+TRADING DINÂMICO
+Publicado: 24/04/2020
+Pesquisadores: Victor Matheus Rodrigues de Carvalho, Ennio Ferreira Bastos Junior, Leonardo Lacerda Galler
+Descrição: Apesar de bem explorado em sistemas financeiros mais maduros, o uso de algoritmos para trading tem se tornado cada vez mais comum no mercado nacional. Diante desse cenário, o projeto visa o desenvolvimento de estratégias de investimento baseadas em indicadores da análise técnica
+
+QRNN
+Publicado: 24/04/2020
+Pesquisadores: Stefano Giacomazzi Dantas, Leonardo Lacerda Galler
+Descrição: Métricas de risco são extremamente importantes no contexto financeiro. Dentre várias métricas disponíveis, destaca-se o Value at Risk (VaR), que busca representar os  elementos de risco de um portfolio em apenas um número. O objetivo desse projeto é desenvolver um modelo baseado em redes neurais recorrentes para estimar o
+
+BANK DEFAULT CONCENTRATION AND COMPETITION
+Publicado: 09/03/2020
+Pesquisadores: João Gabriel de Moraes Souza
+Descrição:  O Objetivo principal do projeto é analisar os impactos das medidas de concentração e competição bancária no default dessas instituições e em um possível efeito sistêmico. Levando-se em consideração a capacidade de injeção de liquidez do estado, impactos de Too Big to Fail, e as diferenças entre competição e concentração.
+
