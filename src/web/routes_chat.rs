@@ -41,20 +41,12 @@ async fn robert_chat(
     let mut messages: Vec<Message> =
         MessageBmc::get_by_session_id(&app_manager, session_id).await?;
 
-    let initial_messages: MessageAI = RobertAI::get_initial_system_msg(context);
-    let message_c = MessageForCreate {
-        content: initial_messages.content,
-        typed_role: TypeRole::to_string(&initial_messages.role),
-        session_id,
-    };
-
-    MessageBmc::create(&app_manager, message_c.clone()).await?;
-    messages.push(Message::from(message_c));
+    let content_with_template = RobertAI::get_prompt_template(content, context);
 
     let mut message_c = MessageForCreate {
-        content,
+        content: content_with_template.content,
+        typed_role: TypeRole::to_string(&content_with_template.role),
         session_id,
-        typed_role: "user".to_string(),
     };
 
     MessageBmc::create(&app_manager, message_c.clone()).await?;

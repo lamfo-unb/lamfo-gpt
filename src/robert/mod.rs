@@ -23,22 +23,18 @@ impl RobertAI {
         }
     }
 
-    pub fn get_initial_system_msg(ctx: String) -> Message {
+    pub fn get_prompt_template(question: String, ctx: String) -> Message {
         let initial_message = Message {
             content: format!("
-                
-                Your name is Robert. You are an informational assistant about LAMFO (Machine Learning Laboratory in Finance and Organizations), and your job is to answer questions based on the past context of people who are interested in knowing more about the laboratory. Therefore, respond clearly and concisely.
+                You are an assistant for question-answering tasks for LAMFO (Machine Learning Laboratory in Finance and Organizations). 
+                Use the following pieces of retrieved context to answer the question. 
+                If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
 
-                CONTEXT OBTAINED FROM DOCUMENTS OF LAMFO:
-                \"\"\"
-                {:?}
-                \"\"\"
+                Question: {:?}
 
-                If asked about something unrelated to LAMFO, you simply respond that you can only answer questions related to LAMFO.
-
-                If you cannot find the user's answer in the context, you respond that you are unable to answer the user's question.
-            ", ctx),
-            role: message::TypeRole::System
+                Context: {:?}
+            ", question, ctx),
+            role: message::TypeRole::Assistant
         };
 
         initial_message
