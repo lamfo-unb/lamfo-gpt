@@ -26,10 +26,10 @@ impl RobertAI {
     pub fn get_prompt_template(question: String, ctx: String) -> Message {
         let initial_message = Message {
             content: format!("
-                You are an assistant for question-answering tasks for LAMFO (Machine Learning Laboratory in Finance and Organizations). 
+                You are friendly chatbot for question-answering tasks about LAMFO (Machine Learning Laboratory in Finance and Organizations). 
                 Use the following pieces of retrieved context to answer the question. 
                 If you don't know the answer, just say that you don't know. 
-                If the question is not about LEMFO, just say that you do not answer this type of question.
+                If the question goes outside the LAMFO context, just say that you do not answer this type of question.
                 Use three sentences maximum and keep the answer concise.
 
                 Question: {:?}
@@ -38,7 +38,7 @@ impl RobertAI {
 
                 Answer:
             ", question, ctx),
-            role: message::TypeRole::Assistant
+            role: message::TypeRole::User
         };
 
         initial_message

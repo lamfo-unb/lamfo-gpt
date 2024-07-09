@@ -1,26 +1,28 @@
-O Laboratório de Aprendizado de Máquina em Finanças e Organizações (LAMFO) atua em parceria com os mais diversos entes da Administração Pública Federal e Regional e iniciativa privada. Dentre esses acordos de Cooperação Técnica destacam-se os seguintes projetos já realizados ou em fase de realização:
+O Laboratório de Aprendizado de Máquina em Finanças e Organizações (LAMFO) atua em parceria
+com os mais diversos entes da Administração Pública Federal e Regional e iniciativa privada. 
+Dentre esses acordos de Cooperação Técnica destacam-se os seguintes projetos já realizados ou em fase de realização:
 
-Conselho Administrativo de Defesa Econômica
+Parceria com o Conselho Administrativo de Defesa Econômica
 Projeto: BRA/11/008 Economic and Consumer Rights
 Desenvolvimento: 08/2014-06/2016
 Descrição: A cooperação proveu ao CADE conhecimento técnico especializado consistente no desenvolvimento de modelos de Aprendizado de Máquina aplicados à detecção e repressão a cartéis, aprimorando assim, a atividade de monitoramento de práticas de mercado por parte da Superintendência-Geral (inc. I, art. 13, Lei 12.529/2011). Durante esse projeto desenvolveu-se técnicas de monitoramento de mercados para a avaliação de risco de colusão e identificação de potenciais infrações à ordem econômica através de métodos estatísticos e econométricos do campo de Aprendizado de Máquina.
 
-Confederação Nacional da Indústria
+Parceria com o Confederação Nacional da Indústria
 Projeto: Desenvolvimento de sistema georeferenciado para apoio a decisão
 Desenvolvimento: 01/2018-09/2018
 Descrição: A cooperação proveu ao CNI um sistema desenvolvido em shiny (https://lamfo.shinyapps.io/cnifast/) para apoio à decisão dos gestores quanto à definição dos cursos a serem oferecidos, localidade bem como apresentar as características das empresas e escolas para cada Unidade da Federação.
 
-NVIDIA Corporation
+Parceria com o NVIDIA Corporation
 Projeto: NVIDIA GPU Grant
 Desenvolvimento: 09/2018
 Descrição: O LAMFO foi contemplado pelo NVIDIA com a doação de uma placa aceleradora Titan Xp para execução de projetos que necessitem de GPU no treinamento, validação e teste das máquinas construídas pelo laboratório. Agradecemos o apoio da NVIDIA Corporation pela doação da GPU Titan Xp usada em nossas pesquisas.
 
-Laboratório Nacional de Computação Científica
+Parceria com o Laboratório Nacional de Computação Científica
 Projeto: SDumont - SINAPAD
 Desenvolvimento: 2018-2019
 Descrição: O LAMFO foi escolhido, junto com outros laboratórios e grupos de pesquisa do Brasil, para ter acesso ao uso gratuito de processamento em nuvem do computador SDumont do Laboratório Nacional de Computação Científica. Agradecemos o apoio da LNCC Corporation pela doação da GPU Titan Xp usada em nossas pesquisas.
 
-Microsoft AI for Health
+Parceria com a Microsoft AI for Health
 Projeto: Curbing Misinformation: Information extraction, categorisation and visualisation for COVID-19 news using NLP unsupervised techniques
 Desenvolvimento: 08/2020
 Descrição: Research funds to tackle the misinformation around COVID-19 using NLP (US$ 61,766)
