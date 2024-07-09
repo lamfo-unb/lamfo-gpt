@@ -4,6 +4,6 @@ OPENAI_API_KEY="sk-proj-3Hqcc0AA1HcKoDKOXcIDT3BlbkFJJShJIpA7E6v9DqZlux1U"
 
 RUST_LOG="assist_lamfo=debug"
 
-DB_URL="postgres://app_user:dev_only_pwd@localhost/app_db"
+DB_URL="postgres://app_user:dev_only_pwd@db/app_db"
 
 MODEL_CHAT_OA="gpt-4o"
