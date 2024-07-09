@@ -43,3 +43,4 @@ Modelagem de Volatilidade: ARCH, GARCH e MMAR
 Eficiência de Mercado e Random Walk
 Difference in differences (DID)
 Regression discontinuity design
+

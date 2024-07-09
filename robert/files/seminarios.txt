@@ -10,3 +10,4 @@ Seminários do LAMFO em IA:
 - Erros que Cometi - Matheus Facure
 - Fundamentos do Machine Learning, uma introdução sem matemática - Peng Yaohao
 - Minha experiência em tech companies, vida no exterior e como o LAMFO me ajudou chegar até aqui - Sarah Sabino
+

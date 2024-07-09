@@ -24,3 +24,4 @@ Microsoft AI for Health
 Projeto: Curbing Misinformation: Information extraction, categorisation and visualisation for COVID-19 news using NLP unsupervised techniques
 Desenvolvimento: 08/2020
 Descrição: Research funds to tackle the misinformation around COVID-19 using NLP (US$ 61,766)
+
