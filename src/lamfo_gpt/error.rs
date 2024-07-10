@@ -1,16 +1,12 @@
 use derive_more::From;
 
-use crate::{ais, utils};
+use crate::ais;
 
 pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug, From)]
 pub enum Error {
-    DataDirNotFound,
-    UtilsError(utils::error::Error),
     AisError(ais::error::Error),
-    ReadError(std::io::Error),
-    ShouldNotDeleteError(String),
 }
 
 // region:    --- Error Boilerplate

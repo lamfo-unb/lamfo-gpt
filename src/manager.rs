@@ -5,7 +5,7 @@ use crate::model::store::new_db_pool;
 use crate::{ais::OaClient, embeddings::EmbeddingState, model::store::Db};
 use crate::utils::files::load_files_from_dir;
 
-use crate::error::{ Result, Error };
+use crate::error::Result;
 
 #[derive(Clone)]
 pub struct AppManager {

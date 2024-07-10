@@ -4,7 +4,7 @@ use crate::{
     embeddings::get_contents,
     manager::AppManager,
     model::message::{Message, MessageBmc, MessageForCreate},
-    robert::RobertAI,
+    lamfo_gpt::LAMFOGPT,
     utils::message::format_msg_to_msg_ai,
     web::error::Result,
 };
@@ -33,15 +33,14 @@ async fn robert_chat(
     let session_id =
         Uuid::parse_str(&session_id_str).map_err(|err| Error::UuidError(err.to_string()))?;
 
-    
     let context = get_contents(app_manager.oac(), &content, &app_manager.embedding_state())
-    .await
-    .map_err(|err| Error::Embedding(err.to_string()))?;
+        .await
+        .map_err(|err| Error::Embedding(err.to_string()))?;
 
     let mut messages: Vec<Message> =
         MessageBmc::get_by_session_id(&app_manager, session_id).await?;
 
-    let content_with_template = RobertAI::get_prompt_template(content, context);
+    let content_with_template = LAMFOGPT::get_prompt_template(content, context);
 
     let mut message_c = MessageForCreate {
         content: content_with_template.content,

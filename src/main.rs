@@ -1,5 +1,5 @@
 use axum::{middleware, Router};
-use embeddings::{embed_documentation, get_contents};
+use embeddings::embed_documentation;
 use manager::AppManager;
 use tower::ServiceBuilder;
 use tower_http::cors::CorsLayer;
@@ -16,7 +16,7 @@ mod config;
 mod embeddings;
 mod error;
 mod model;
-mod robert;
+mod lamfo_gpt;
 mod utils;
 mod web;
 mod manager;

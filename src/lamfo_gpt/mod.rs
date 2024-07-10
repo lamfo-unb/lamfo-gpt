@@ -1,28 +1,10 @@
-use crate::{
-    ais::{
-        message::{self, Message},
-        OaClient,
-    },
-    config::config,
-};
+use crate::ais::message::{self, Message};
 
 mod error;
 
-use crate::robert::error::Result;
+pub struct LAMFOGPT {}
 
-pub struct RobertAI {
-    pub model: String,
-    pub messages: Vec<Message>,
-}
-
-impl RobertAI {
-    pub fn new(messages: Vec<Message>) -> RobertAI {
-        RobertAI {
-            model: config().model_chat_oa.clone(),
-            messages: messages,
-        }
-    }
-
+impl LAMFOGPT {
     pub fn get_prompt_template(question: String, ctx: String) -> Message {
         let initial_message = Message {
             content: format!("
@@ -42,12 +24,5 @@ impl RobertAI {
         };
 
         initial_message
-    }
-
-    pub async fn send_message(&mut self, oac: &OaClient, messages: Vec<Message>) -> Result<()> {
-        let new_message = Message::send_message(oac, messages).await?;
-        self.messages.push(new_message);
-
-        Ok(())
     }
 }
