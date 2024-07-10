@@ -18,7 +18,7 @@ use crate::web::error::Error;
 
 pub fn routes(app_manager: AppManager) -> Router {
     Router::new().route(
-        "/api/robert/chat",
+        "/api/lamfo-gpt/chat",
         post(robert_chat).with_state(app_manager),
     )
 }
