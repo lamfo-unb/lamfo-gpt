@@ -16,6 +16,7 @@ pub struct Config {
     pub openai_api_key: String,
     pub db_url: String,
     pub model_chat_oa: String,
+    pub qdrant_url: String,
 }
 
 impl Config {
@@ -24,7 +25,8 @@ impl Config {
             Config {
                 openai_api_key: get_env("OPENAI_API_KEY")?,
                 db_url: get_env("DB_URL")?,
-                model_chat_oa: get_env("MODEL_CHAT_OA")?
+                model_chat_oa: get_env("MODEL_CHAT_OA")?,
+                qdrant_url: get_env("QDRANT_URL")?
             }
         )
     }
