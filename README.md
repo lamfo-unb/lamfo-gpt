@@ -3,4 +3,8 @@ LAMFO GPT is an expert on LAMFO (Machine Learning Laboratory in Finance and Orga
 
 My idea is expand knowledge of LAMFO GPT for get informations through web scrapping, videos and database. For help organizations other areas for example Law, Economy, News and many others depending on your imagination.
 
-## API
+## RUN
+
+```bash
+docker build -f Dockerfile -t dauid64/lamfo-gpt .
+```

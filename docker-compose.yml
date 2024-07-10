@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    image: dauid64/assist-lamfo
+    image: dauid64/lamfo-gpt
     build:
       context: .
     env_file:
@@ -11,6 +11,7 @@ services:
     depends_on:
       - db
       - qdrant
+    restart: "on-failure"
   db:
     image: postgres:16
     env_file:
