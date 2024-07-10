@@ -9,3 +9,9 @@ DB_URL="postgres://app_user:dev_only_pwd@localhost/app_db"
 QDRANT_URL="http://localhost:6334"
 
 MODEL_CHAT_OA="gpt-3.5-turbo-0125"
+
+LAMFO_GPT_DIR="./lamfo_gpt/files"
+
+PG_DEV_POSTGRES_URL="postgres://postgres:welcome@localhost/postgres"
+
+PG_DEV_APP_URL="postgres://app_user:dev_only_pwd@localhost/app_db"

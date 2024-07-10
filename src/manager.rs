@@ -1,4 +1,5 @@
 use crate::ais::new_oa_client;
+use crate::config::config;
 use crate::embeddings::store::new_qdrant_connect;
 use crate::embeddings::vector::VectorDB;
 use crate::model::store::new_db_pool;
@@ -21,7 +22,7 @@ impl AppManager {
         let qdrant_client = new_qdrant_connect()
             .await?;
 
-        let files = load_files_from_dir("./robert/files".into(), "txt", &".".into())?;
+        let files = load_files_from_dir(config().lamfo_gpt_dir.clone().into(), "txt", &".".into())?;
         let vector_db = VectorDB::new(qdrant_client);
 
         vector_db

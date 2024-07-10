@@ -3,10 +3,9 @@ use std::{fs, path::PathBuf, time::Duration};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use tracing::info;
 
-type Db = Pool<Postgres>;
+use crate::config::config;
 
-const PG_DEV_POSTGRES_URL: &str = "postgres://postgres:welcome@db/postgres";
-const PG_DEV_APP_URL: &str = "postgres://app_user:dev_only_pwd@db/app_db";
+type Db = Pool<Postgres>;
 
 const SQL_RECREATE_DB: &str = "sql/dev_initial/00-recreate-db.sql";
 const SQL_DIR: &str = "sql/dev_initial";
@@ -15,7 +14,7 @@ pub async fn init_dev_db() -> Result<(), Box<dyn std::error::Error>> {
     info!("{:<12} - init_dev_db()", "FOR-DEV-ONLY");
 
     {
-        let root_db = new_db_pool(PG_DEV_POSTGRES_URL).await?;
+        let root_db = new_db_pool(&config().pg_dev_postgres_url).await?;
         pexec(&root_db, SQL_RECREATE_DB).await?;
     }
 
@@ -24,7 +23,7 @@ pub async fn init_dev_db() -> Result<(), Box<dyn std::error::Error>> {
         .collect();
     paths.sort();
 
-    let app_db = new_db_pool(PG_DEV_APP_URL).await?;
+    let app_db = new_db_pool(&config().pg_dev_app_url).await?;
     for path in paths {
         if let Some(path) = path.to_str() {
             let path = path.replace("\\", "/");
