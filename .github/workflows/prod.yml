@@ -69,8 +69,6 @@ jobs:
           password: ${{ secrets.DROPLET_PASSWORD }}
           script: |
             cd ~
-            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            export RUST_LOG=assist_lamfo=info
-            docker compose down
-            docker compose pull
-            docker compose up -d
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
