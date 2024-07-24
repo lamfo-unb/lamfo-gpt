@@ -2,10 +2,20 @@ pub type Result<T> = core::result::Result<T, Error>;
 use derive_more::From;
 use serde::Serialize;
 
+use crate::{embeddings, utils};
+
 #[derive(Debug, From, Serialize, Clone)]
 pub enum Error {
     OpenAIError(String),
+    #[from(ignore)]
+    SerdeJsonError(String),
     NoRoleDefined,
+    #[from(ignore)]
+    FunctionCallError(String),
+    #[from(ignore)]
+    EmbeddingError(String),
+    NoFunctionDefined,
+    Utils(utils::error::Error)
 }
 
 // region:    --- Error Boilerplate
