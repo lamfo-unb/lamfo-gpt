@@ -33,7 +33,7 @@ pub async fn call_function_tool(
                 let completion = get_contents(&oac, &embedding_state, prompt)
                     .await
                     .map_err(|err| Error::EmbeddingError(err.to_string()))?;
-                let prompt_with_context = LAMFOGPT::get_prompt_template_with_context(&completion);
+                let prompt_with_context = LAMFOGPT::get_prompt_template_with_context(prompt,&completion);
                 let message_formatted: ChatCompletionRequestMessage =
                     ChatCompletionRequestUserMessageArgs::default()
                         .content(prompt_with_context.content)
@@ -73,7 +73,7 @@ pub fn get_functions_schemas() -> Result<Vec<ChatCompletionTool>> {
                     "properties": {
                         "question": {
                             "type": "string",
-                            "description": "User asked question about LAMFO"
+                            "description": "User question about LAMFO concisely and clearly"
                         }
                     },
                     "required": ["question"]

@@ -19,15 +19,18 @@ impl LAMFOGPT {
         initial_message
     }
 
-    pub fn get_prompt_template_with_context(context: &str) -> Message {
+    pub fn get_prompt_template_with_context(question: &str, context: &str) -> Message {
         let initial_message = Message {
             content: format!("
                 You are a friendly assistant to formulate a response about LAMFO, given a context that I will provide between ```.
                 Your natural language is Brazilian Portuguese.
                 If even given the context you do not know the question, simply respond that you do not know and that you will save the question to know how to answer it later.
 
+                Question: ```{}```
+
                 Context: ```{}```
                 ",
+                question,
                 context
             ),
             role: message::TypeRole::System
