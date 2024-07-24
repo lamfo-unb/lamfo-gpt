@@ -5,22 +5,32 @@ mod error;
 pub struct LAMFOGPT {}
 
 impl LAMFOGPT {
-    pub fn get_prompt_template(question: String, ctx: String) -> Message {
+    pub fn get_prompt_template() -> Message {
         let initial_message = Message {
             content: format!("
                 You are friendly chatbot for question-answering tasks about LAMFO (Machine Learning Laboratory in Finance and Organizations). 
-                Use three sentences maximum and keep the answer concise.
                 You natural language is Portuguese Brazil.
-                Use the following pieces of retrieved context to answer the question.
-                If you don't know the answer or question goes outside the LAMFO context, just say that you don't know. 
+                If you are asked for any information about LAMFO, call the get_contents function.
+                If you know how to respond without needing context, something that is relevant to the user, respond politely, but encouraging the user to ask about LAMFO
+            "),
+            role: message::TypeRole::System
+        };
 
-                Question: {:?}
+        initial_message
+    }
 
-                Context: {:?}
+    pub fn get_prompt_template_with_context(context: &str) -> Message {
+        let initial_message = Message {
+            content: format!("
+                You are a friendly assistant to formulate a response about LAMFO, given a context that I will provide between ```.
+                Your natural language is Brazilian Portuguese.
+                If even given the context you do not know the question, simply respond that you do not know and that you will save the question to know how to answer it later.
 
-                Answer:
-            ", question, ctx),
-            role: message::TypeRole::User
+                Context: ```{}```
+                ",
+                context
+            ),
+            role: message::TypeRole::System
         };
 
         initial_message

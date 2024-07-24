@@ -9,6 +9,7 @@ pub enum Error {
     OpenAIError(OpenAIError),
     QdrantError(QdrantError),
     PromptError,
+    Tokio(std::io::Error)
 }
 
 // region:    --- Error Boilerplate

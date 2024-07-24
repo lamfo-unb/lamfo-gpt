@@ -4,6 +4,7 @@ use finder::Finder;
 use tracing::info;
 use vector::VectorDB;
 use crate::ais::OaClient;
+use serde::Deserialize;
 
 use self::error::{ Result, Error };
 
@@ -17,6 +18,11 @@ mod finder;
 pub struct EmbeddingState {
     pub files: Vec<File>,
     pub vector_db: VectorDB
+}
+
+#[derive(Deserialize)]
+struct GetContentsParams {
+    prompt: String,
 }
 
 pub async fn embed_file(oac: &OaClient,file: &File) -> Result<Vec<Embedding>> {
@@ -54,7 +60,7 @@ pub async fn embed_documentation(oac: &OaClient, vector_db: &mut VectorDB, files
     Ok(())
 }
 
-pub async fn get_contents(oac: &OaClient, prompt: &str, app_state: &EmbeddingState) -> Result<String> {
+pub async fn get_contents(oac: &OaClient, app_state: &EmbeddingState, prompt: &str) -> Result<String> {
     let embedding = embed_sentence(oac, prompt).await?;
     let result = app_state.vector_db.search(embedding[0].clone()).await?;
     let content = app_state

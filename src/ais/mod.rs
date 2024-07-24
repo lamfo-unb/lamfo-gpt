@@ -4,6 +4,7 @@ pub use crate::ais::error::Error;
 
 pub mod error;
 pub mod message;
+pub mod function;
 
 pub type OaClient = Client<OpenAIConfig>;
 

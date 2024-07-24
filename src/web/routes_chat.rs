@@ -2,9 +2,9 @@ use crate::ais::message::Message as MessageAI;
 use crate::{
     ais::message::TypeRole,
     embeddings::get_contents,
+    lamfo_gpt::LAMFOGPT,
     manager::AppManager,
     model::message::{Message, MessageBmc, MessageForCreate},
-    lamfo_gpt::LAMFOGPT,
     utils::message::format_msg_to_msg_ai,
     web::error::Result,
 };
@@ -12,6 +12,7 @@ use axum::{extract::State, routing::post, Json, Router};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use tower_sessions::Session;
+use tracing::debug;
 use uuid::Uuid;
 
 use crate::web::error::Error;
@@ -33,30 +34,41 @@ async fn robert_chat(
     let session_id =
         Uuid::parse_str(&session_id_str).map_err(|err| Error::UuidError(err.to_string()))?;
 
-    let context = get_contents(app_manager.oac(), &content, &app_manager.embedding_state())
-        .await
-        .map_err(|err| Error::Embedding(err.to_string()))?;
-
     let mut messages: Vec<Message> =
         MessageBmc::get_by_session_id(&app_manager, session_id).await?;
+    
+    if messages.is_empty() {
+        let content_with_template = LAMFOGPT::get_prompt_template();
 
-    let content_with_template = LAMFOGPT::get_prompt_template(content, context);
+        let message_c = MessageForCreate {
+            content: content_with_template.content,
+            typed_role: TypeRole::to_string(&content_with_template.role),
+            session_id,
+        };
+    
+        MessageBmc::create(&app_manager, message_c.clone()).await?;
+        messages.push(Message::from(message_c)); 
+    }
 
-    let mut message_c = MessageForCreate {
-        content: content_with_template.content,
-        typed_role: TypeRole::to_string(&content_with_template.role),
+    let message_c = MessageForCreate {
+        content: content.clone(),
+        typed_role: TypeRole::User.to_string(),
         session_id,
     };
-
     MessageBmc::create(&app_manager, message_c.clone()).await?;
     messages.push(Message::from(message_c));
 
     let messages_formatted_ai: Vec<MessageAI> =
         format_msg_to_msg_ai(messages).map_err(|err| Error::Utils(err.to_string()))?;
-    let response_message =
-        MessageAI::send_message(app_manager.oac(), messages_formatted_ai).await?;
 
-    message_c = MessageForCreate {
+    let response_message = MessageAI::send_message(
+        app_manager.oac(),
+        messages_formatted_ai,
+        &app_manager.embedding_state(),
+    )
+    .await?;
+
+    let message_c = MessageForCreate {
         content: response_message.content.clone(),
         typed_role: TypeRole::to_string(&response_message.role),
         session_id,
