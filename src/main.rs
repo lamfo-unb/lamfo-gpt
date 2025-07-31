@@ -23,6 +23,8 @@ mod manager;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    dotenv::dotenv().ok();
+
     tracing_subscriber::registry()
         .with(fmt::Layer::default())
         .with(EnvFilter::from_default_env())
