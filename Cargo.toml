@@ -61,3 +61,4 @@ qdrant-client = "1.10.1"
 
 derive_more = {version = "1.0.0-beta", features = ["from", "display", "deref"] }
 uuid = {version = "1", features = ["v4","fast-rng","serde"]}
+dotenv = "0.15.0"

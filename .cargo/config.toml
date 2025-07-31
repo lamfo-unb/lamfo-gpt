@@ -1,7 +1,5 @@
 [env]
 
-OPENAI_API_KEY="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"
-
 RUST_LOG="assist_lamfo=debug"
 
 DB_URL="postgres://app_user:dev_only_pwd@localhost/app_db"
